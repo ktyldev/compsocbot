@@ -1,11 +1,22 @@
 import discord
 import sys
+import pickle
+import os
 import commands as cmd
-
-if len(sys.argv) != 2:
-    print('Usage: python3 main.py [token]')
-
-token = sys.argv[1]
+#if len(sys.argv) != 2:
+#    print('Usage: python3 main.py [token]')
+try:
+    with open(os.path.join(os.path.dirname(__file__), "token.pickle"), 'rb') as file:
+        token = pickle.load(file)
+    if len(token) == 59:
+        print('Found saved token in stored.py, use command tokenreset to undo this.')#youll need to add the command
+    else:
+        raise
+except:
+    #code tokenreset with admin permissions
+    token = input('What is your Discord bot token? (found on Discord developer page): ')
+    with open(os.path.join(os.path.dirname(__file__), "token.pickle"), 'wb') as file:
+        pickle.dump(token, file)
 
 client = discord.Client()
 commands = cmd.Commands(client)
